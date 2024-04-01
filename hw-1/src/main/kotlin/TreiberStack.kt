@@ -1,7 +1,7 @@
 import java.util.concurrent.atomic.AtomicReference
 
 class TreiberStack<T> : Stack<T>() {
-    override fun push(item: T) {
+    override suspend fun push(item: T) {
         val newHead = Node(item)
         var oldHead: Node<T>?
 
@@ -11,7 +11,7 @@ class TreiberStack<T> : Stack<T>() {
         } while (!top.compareAndSet(oldHead, newHead))
     }
 
-    override fun pop(): T? {
+    override suspend fun pop(): T? {
         var oldHead: Node<T>
         var newHead: Node<T>?
 

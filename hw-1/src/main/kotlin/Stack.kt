@@ -3,8 +3,8 @@ import java.util.concurrent.atomic.AtomicReference
 abstract class Stack<T> {
     @Volatile
     protected var top = AtomicReference<Node<T>>()
-    abstract fun push(item: T)
-    abstract fun pop(): T?
+    abstract suspend fun push(item: T)
+    abstract suspend fun pop(): T?
 
     fun head(): T? = top.get()?.item
 

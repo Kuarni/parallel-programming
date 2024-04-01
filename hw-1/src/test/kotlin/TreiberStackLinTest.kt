@@ -1,5 +1,6 @@
 import org.jetbrains.kotlinx.lincheck.annotations.*
 import org.jetbrains.kotlinx.lincheck.*
+import org.jetbrains.kotlinx.lincheck.strategy.managed.modelchecking.ModelCheckingOptions
 import org.jetbrains.kotlinx.lincheck.strategy.stress.StressOptions
 import org.junit.jupiter.api.*
 
@@ -10,11 +11,15 @@ class TreiberStackLinTest {
     fun get() = treiberStack.head()
 
     @Operation
-    fun push(num: Int) = treiberStack.push(num)
+    suspend fun push(num: Int) = treiberStack.push(num)
 
     @Operation
-    fun pop() = treiberStack.pop()
+    suspend fun pop() = treiberStack.pop()
 
-    @Test // JUnit
+
+    @Test
     fun stressTest() = StressOptions().check(this::class)
+
+    @Test
+    fun modelChecking() = ModelCheckingOptions().check(this::class)
 }
