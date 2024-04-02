@@ -1,21 +1,22 @@
-import org.jetbrains.kotlinx.lincheck.annotations.*
-import org.jetbrains.kotlinx.lincheck.*
+package staks
+
+import org.jetbrains.kotlinx.lincheck.annotations.Operation
+import org.jetbrains.kotlinx.lincheck.check
 import org.jetbrains.kotlinx.lincheck.strategy.managed.modelchecking.ModelCheckingOptions
 import org.jetbrains.kotlinx.lincheck.strategy.stress.StressOptions
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Test
 
-class TreiberStackLinTest {
-    private val treiberStack = TreiberStack<Int>() // Initial state
-
-    @Operation
-    fun get() = treiberStack.head()
+class EBSLinTest {
+    private val EBS = EBS<Int>()
 
     @Operation
-    suspend fun push(num: Int) = treiberStack.push(num)
+    fun get() = EBS.head()
 
     @Operation
-    suspend fun pop() = treiberStack.pop()
+    suspend fun push(num: Int): Unit = EBS.push(num)
 
+    @Operation
+    suspend fun pop(): Int? = EBS.pop()
 
     @Test
     fun stressTest() = StressOptions().check(this::class)
