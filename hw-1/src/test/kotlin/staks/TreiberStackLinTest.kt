@@ -5,7 +5,6 @@ import org.jetbrains.kotlinx.lincheck.*
 import org.jetbrains.kotlinx.lincheck.strategy.managed.modelchecking.ModelCheckingOptions
 import org.jetbrains.kotlinx.lincheck.strategy.stress.StressOptions
 import org.junit.jupiter.api.*
-import staks.TreiberStack
 
 class TreiberStackLinTest {
     private val treiberStack = TreiberStack<Int>() // Initial state

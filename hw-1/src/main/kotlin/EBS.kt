@@ -1,10 +1,9 @@
 package staks
 
-import java.lang.IllegalArgumentException
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicReference
 
-class EBS<T>(private val collisionArraySize: Int = 6) : Stack<T>() {
+class EBS<T>(collisionArraySize: Int = 6) : Stack<T>() {
     override suspend fun push(item: T) {
         stackOp(ThreadInfo(Operation.PUSH, Node(item)))
     }
