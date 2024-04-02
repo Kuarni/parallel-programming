@@ -1,5 +1,3 @@
-import java.util.concurrent.atomic.AtomicReference
-
 class TreiberStack<T> : Stack<T>() {
     override suspend fun push(item: T) {
         val newHead = Node(item)
