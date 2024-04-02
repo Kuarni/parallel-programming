@@ -1,7 +1,10 @@
+package staks
+
 import java.lang.IllegalArgumentException
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicReference
 
-class EBS<T>(private val threadArraySize: Int = 1000) : Stack<T>() {
+class EBS<T>(private val collisionArraySize: Int = 6) : Stack<T>() {
     override suspend fun push(item: T) {
         stackOp(ThreadInfo(Operation.PUSH, Node(item)))
     }
@@ -15,11 +18,10 @@ class EBS<T>(private val threadArraySize: Int = 1000) : Stack<T>() {
     enum class Operation { PUSH, POP }
 
     private class ThreadInfo<T>(val op: Operation, var node: Node<T>?) {
-        val id = Thread.currentThread().threadId().toInt()
+        val id = Thread.currentThread().id.toInt()
     }
 
-    private val collisionArraySize = 6
-    private val location = Array<AtomicReference<ThreadInfo<T>>?>(threadArraySize) { null }
+    private val location = ConcurrentHashMap<Int, AtomicReference<ThreadInfo<T>>?>()
     private val collision = Array<AtomicReference<Int>>(collisionArraySize) { AtomicReference(null) }
 
     private fun stackOp(thread: ThreadInfo<T>) {
@@ -31,8 +33,6 @@ class EBS<T>(private val threadArraySize: Int = 1000) : Stack<T>() {
     private fun tryPerformStackOp(p: ThreadInfo<T>): Boolean {
         val phead: Node<T>?
         val pnext: Node<T>?
-        if (p.id >= threadArraySize)
-            throw IllegalArgumentException("thread it: ${p.id} cannot be placed to array of size $threadArraySize")
         when (p.op) {
             Operation.PUSH -> {
                 phead = this.top.get()

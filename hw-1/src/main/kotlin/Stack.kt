@@ -1,3 +1,5 @@
+package staks
+
 import java.util.concurrent.atomic.AtomicReference
 
 abstract class Stack<T> {
