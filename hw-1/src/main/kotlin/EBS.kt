@@ -1,9 +1,10 @@
 package staks
 
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
 
-class EBS<T>(collisionArraySize: Int = 6) : Stack<T>() {
+class EBS<T>(private val sleepTimeMicroseconds: Long = 10, collisionArraySize: Int = 6) : Stack<T>() {
     override suspend fun push(item: T) {
         stackOp(ThreadInfo(Operation.PUSH, Node(item)))
     }
@@ -80,6 +81,7 @@ class EBS<T>(collisionArraySize: Int = 6) : Stack<T>() {
                     }
                 }
             }
+            TimeUnit.MICROSECONDS.sleep(sleepTimeMicroseconds)
             if (location[p.id]?.compareAndSet(p, null) == false) {
                 finishCollision(p)
                 return
