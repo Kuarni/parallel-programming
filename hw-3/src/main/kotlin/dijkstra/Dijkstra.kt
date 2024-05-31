@@ -9,9 +9,9 @@ import java.util.PriorityQueue
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
-fun dijkstraSeq(graph: WeightedGraph, start: String, destination: String): Int {
-    val nodeInfo = HashMap<String, Int>().withDefault { Int.MAX_VALUE }
-    val visited = mutableSetOf<String>()
+fun dijkstraSeq(graph: WeightedGraph, start: Int, destination: Int): Int {
+    val nodeInfo = HashMap<Int, Int>().withDefault { Int.MAX_VALUE }
+    val visited = mutableSetOf<Int>()
     val queue = PriorityQueue<Edge>()
 
     queue.add(Edge(start, 0))
@@ -36,8 +36,8 @@ fun dijkstraSeq(graph: WeightedGraph, start: String, destination: String): Int {
 
 fun dijkstraParallel(
     graph: WeightedGraph,
-    start: String,
-    destination: String,
+    start: Int,
+    destination: Int,
     queuesNum: Int = 4,
     threadNum: Int = 4,
     seed: Long = 0xEBAC0C,

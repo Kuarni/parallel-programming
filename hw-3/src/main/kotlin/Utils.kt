@@ -5,22 +5,22 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File
 
-fun generateGraph(verticesNum: Int, seed: Long = 0xebac0c, maxWeight: Int = 100): WeightedGraph {
+fun generateGraph(verticesNum: Int, seed: Long = 0xebac0c, maxWeight: Int = 100, maxEdges: Int = 100): WeightedGraph {
     val random = Random(seed)
-    val needToCreate = HashMap<Int, Queue<Pair<Int, Int>>>()
+    val needToCreate = Array<Queue<Pair<Int, Int>>>(verticesNum) { LinkedList() }
     val graph: WeightedGraph = HashMap(Array(verticesNum) { curNode ->
-        curNode.toString() to Array(
-            (needToCreate[curNode]?.size ?: 0) + (if (curNode + 1 != verticesNum) random.nextInt(verticesNum) else 0)
+        curNode to Array(
+            (needToCreate[curNode].size) + (if (curNode + 1 != verticesNum) random.nextInt(maxEdges) else 0)
         ) {
-            val (node, weight) = if ((needToCreate[curNode]?.size ?: 0) != 0) {
-                needToCreate[curNode]?.poll() ?: throw IllegalStateException("Null must be here.")
+            if (needToCreate[curNode].size != 0) {
+                val (node, weight) = needToCreate[curNode].poll() ?: throw IllegalStateException("Null must be here.")
+                node dist weight
             } else {
                 val node = random.nextInt(curNode + 1, verticesNum)
                 val weight = random.nextInt(1, maxWeight + 1)
-                needToCreate.getOrPut(node) { LinkedList() }.add(Pair(curNode, weight))
-                node to weight
+                needToCreate[curNode].add(Pair(curNode, weight))
+                node dist weight
             }
-            node.toString() dist weight
         }
     }.toMap())
     return graph
@@ -44,7 +44,7 @@ fun loadGraph(path: String): WeightedGraph {
     val mapper = jacksonObjectMapper()
 
     val readGraph: WeightedGraph =
-        mapper.readValue<HashMap<String, Array<Edge>>>(
+        mapper.readValue<HashMap<Int, Array<Edge>>>(
             jsonFile
         )
     return readGraph
