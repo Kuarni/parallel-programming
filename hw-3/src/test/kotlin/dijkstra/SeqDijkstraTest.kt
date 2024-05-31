@@ -2,6 +2,7 @@ package dijkstra
 
 import WeightedGraph
 import dist
+import loadGraph
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -17,5 +18,12 @@ class SeqDijkstraTest {
         )
 
         assertEquals(7, dijkstraSeq(graph, "a", "d"))
+    }
+
+    @Test
+    fun load100Test() {
+        val graph: WeightedGraph = loadGraph("graphs/graph100data.json")
+
+        assertEquals(11, dijkstraSeq(graph, "0", "99"))
     }
 }

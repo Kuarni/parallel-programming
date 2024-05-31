@@ -1,7 +1,9 @@
 package floyd
 
 import WeightedGraph
+import dijkstra.dijkstraSeq
 import dist
+import loadGraph
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -17,5 +19,13 @@ class SeqFloydTest {
         )
 
         assertEquals(7, floydSeq(graph, "a", "d"))
+    }
+
+
+    @Test
+    fun load100Test() {
+        val graph: WeightedGraph = loadGraph("graphs/graph100data.json")
+
+        assertEquals(11, dijkstraSeq(graph, "0", "99"))
     }
 }
