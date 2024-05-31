@@ -1,8 +1,11 @@
-import dijkstra.dijkstraSeq
+package dijkstra
+
+import WeightedGraph
+import dist
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class SeqDijkstraTest {
+class ParallelDijkstraTest {
     @Test
     fun simpleTest() {
         val graph: WeightedGraph = hashMapOf(
@@ -13,6 +16,6 @@ class SeqDijkstraTest {
             "d" to arrayOf("b" dist 100, "c" dist 5, "e" dist 1),
         )
 
-        assertEquals(7, dijkstraSeq(graph, "a", "d"))
+        assertEquals(7, dijkstraParallel(graph, "a", "d"))
     }
 }

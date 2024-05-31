@@ -1,3 +1,5 @@
+package dijkstra
+
 import kotlinx.coroutines.*
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -9,7 +11,7 @@ class MultiQueueTest {
         val threads = 2
         val queues = 2
         val iterations = 20
-        val queue = dijkstra.MultiQueue<Int>(queues)
+        val queue = MultiQueue<Int>(queues)
         val jobs = mutableListOf<Job>()
         val data = Array(threads * iterations) { iterations * threads - it }
         val ans = Array(threads * iterations) { AtomicBoolean(false) }
