@@ -9,7 +9,9 @@ fun generateGraph(verticesNum: Int, seed: Long = 0xebac0c, maxWeight: Int = 100)
     val random = Random(seed)
     val needToCreate = HashMap<Int, Queue<Pair<Int, Int>>>()
     val graph: WeightedGraph = HashMap(Array(verticesNum) { curNode ->
-        curNode.toString() to Array(random.nextInt(verticesNum)) {
+        curNode.toString() to Array(
+            (needToCreate[curNode]?.size ?: 0) + (if (curNode + 1 != verticesNum) random.nextInt(verticesNum) else 0)
+        ) {
             val (node, weight) = if ((needToCreate[curNode]?.size ?: 0) != 0) {
                 needToCreate[curNode]?.poll() ?: throw IllegalStateException("Null must be here.")
             } else {
